@@ -5,3 +5,5 @@ obj/
 .vs/
 *bin/
 *.suo
+/infra/promtail-log/**/*
+/infra/tempo-data/**/*
