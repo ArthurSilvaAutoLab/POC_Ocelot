@@ -1,0 +1,31 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/user/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5160
+                }
+            ],
+            "UpstreamPathTemplate": "/api/getservice/{everything}",
+            "UpstreamHttpMethod": [ "GET" ]
+        },
+        {
+            "DownstreamPathTemplate": "/user",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5170
+                }
+            ],
+            "UpstreamPathTemplate": "/postservice",
+            "UpstreamHttpMethod": [ "POST" ]
+        }
+    ],
+    "GlobalConfiguration": {
+            "BaseUrl": "https://localhost:7000"
+    }
+}

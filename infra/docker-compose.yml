@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  init:
+    image: &tempoImage grafana/tempo:latest
+    user: root
+    entrypoint:
+      - chown
+      - 10001:10001
+      - /var/tempo
+    volumes:
+      - ./tempo_data:/var/tempo
+
+  tempo:
+    image: *tempoImage
+    command: ["-config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+      - ./tempo_data:/var/tempo
+    ports:
+      - "3200:3200"
+    depends_on:
+      - init
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-collector.yaml"]
+    volumes:
+      - ./otel-collector.yaml:/etc/otel-collector.yaml
+    ports:
+      - "4317:4317"
+      - "55681:55681"
+    depends_on:
+      - tempo
+
+  prometheus:
+    image: prom/prometheus:latest
+    command: 
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=examplar-storage
+      - --enable-feature=native-histograms
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - "9090:9090"
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./promtail-log:/var/log
+
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
+    ports:
+      - "3000:3000"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_management load_definitions \"/etc/rabbitmq/definitions.json\""
+    volumes:
+      - ./rabbit_definitions.json:/etc/rabbitmq/definitions.json
+    restart: unless-stopped

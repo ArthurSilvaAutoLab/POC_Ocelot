@@ -1,0 +1,27 @@
+[
+  {
+    "Name": "Inicialização Rápida",
+    "Projects": [
+      {
+        "Path": "QueueConsumer\\QueueConsumer.csproj",
+        "Action": "Start",
+        "DebugTarget": "QueueConsumer"
+      },
+      {
+        "Path": "GetService\\GetService.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "PostService\\PostService.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "ApiGateway\\ApiGateway.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      }
+    ]
+  }
+]

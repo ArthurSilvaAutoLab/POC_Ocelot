@@ -1,0 +1,7 @@
+﻿*.tar
+*.dll
+*.exe
+obj/
+.vs/
+*bin/
+*.suo

@@ -1,0 +1,11 @@
+@ApiGateway_HostAddress = http://localhost:5192
+
+GET {{ApiGateway_HostAddress}}/getservice/
+Accept: application/json
+
+###
+
+POST {{ApiGateway_HostAddress}}/postservice/
+Accept: application/json
+
+###

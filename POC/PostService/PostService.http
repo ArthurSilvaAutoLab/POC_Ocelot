@@ -1,0 +1,6 @@
+@PostService_HostAddress = http://localhost:5170
+
+POST {{PostService_HostAddress}}/user/
+Accept: application/json
+
+###
