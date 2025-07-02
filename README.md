@@ -170,19 +170,19 @@ A escolha mais simples seria usarmos o Ocelot como gateway e separamos os stream
 
 ### Stack de Observabilidade :eye::eye:
 
-### Logs 📄
+#### Logs 📄
 Hoje, não temos praticamente nenhuma observabilidade implementada no projeto. Os logs são salvos como arquivos "soltos" no diretório da aplicação, e quem precisa deles geralmente não tem acesso direto. Esses arquivos são isolados e ninguém consegue ter uma visão "geral" de como as aplicações (distribuídas em dezenas de clientes) estão de fato se comportando.
 
 Usar algo como Loki/Grafana vai permitir que os logs sejam acessados por nós com muito mais segurança (não precisaríamos de acesso remoto total à maquina do cliente), em tempo real e possivelmente de forma "totalizada", com informações sobre a quantidade desses logs, sua natureza, etc. Além disso, poderíamos facilmente gerar "agregações" de diversos clientes, para checar aspectos gerais da aplicação (como os clientes do Multicultivo se comportam vs o do Solos, por exemplo).
 
 Nossa vantagem é que todos os logs já são escritos com Serilog e salvos a partir de "Sinks". Isso facilitaria muito a utilização do Grafana.
 
-### Métricas 📏
+#### Métricas 📏
 Nossa aplicação não emite nenhuma métrica em ambiente de produção. Não sabemos quantas conexões de banco são usadas em cada cliente, ou quanta memória nossa aplicação usa.
 
 Nesse sentido, usar o Prometheus com o Otel-Collector pode nos ajudar a observar gargalos que, em desenvolvimento, jamais seriam observados.
 
-### Traces :alarm_clock:
+#### Traces :alarm_clock:
 Não geramos nenhum trace da aplicação. Traces são as "conexões" entre as métricas e os eventos da aplicação. Com eles, poderíamos enxergar quanto tempo uma tela específica demora pra carregar, ou quanto tempo uma ordem de análise fica "viva" na aplicação, desde seu registro até seu resultado. As possibilidades são infinitas!
 
 Portanto, usar uma ferramenta como o Tempo, em conjunto com o Grafana, pode nos dar não só uma visão mais prática dos gargalos que as métricas nos mostraram, mas até mesmo *insights* de produto e usabilidade (quais rotas/telas são menos acessadas, por exemplo).
