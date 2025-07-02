@@ -88,7 +88,7 @@ POC_Ocelot
 
 ```
 
-### Diagrama estrutural ✏️
+## Diagrama estrutural ✏️
 Segue imagem do diagrama estrutural da demonstração: 
 
 ![alt text](docs/estrutura.png)
@@ -168,7 +168,7 @@ Para implementá-lo no nosso projeto, precisamos de algumas definições, como q
 
 A escolha mais simples seria usarmos o Ocelot como gateway e separamos os streams por domínio.
 
-## Stack de Observabilidade :eye::eye:
+### Stack de Observabilidade :eye::eye:
 
 ### Logs 📄
 Hoje, não temos praticamente nenhuma observabilidade implementada no projeto. Os logs são salvos como arquivos "soltos" no diretório da aplicação, e quem precisa deles geralmente não tem acesso direto. Esses arquivos são isolados e ninguém consegue ter uma visão "geral" de como as aplicações (distribuídas em dezenas de clientes) estão de fato se comportando.
